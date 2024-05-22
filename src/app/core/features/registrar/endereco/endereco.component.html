@@ -1,0 +1,58 @@
+<div [formGroup]="formGroup">
+  <div class="mb-3 row">
+    <div class="col-6">
+      <label for="cep" class="form-label">CEP*:</label>
+      <input formControlName="cep" type="text" mask="00000-000" [maxLength]="255" class="form-control" id="cep">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('cep')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div class="col-6">
+      <label for="rua" class="form-label">Rua*:</label>
+      <input formControlName="rua" type="text" [maxLength]="255" class="form-control" id="rua">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('rua')">Não
+        pode ser nulo.
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3 row">
+    <div class="col-6">
+      <label for="numero" class="form-label">Número:</label>
+      <input formControlName="numero" type="number" class="form-control" id="numero">
+    </div>
+    <div class="col-6">
+      <label for="bairro" class="form-label">Bairro*:</label>
+      <input formControlName="bairro" type="text" [maxLength]="255" class="form-control" id="bairro">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('bairro')">Não
+        pode ser nulo.
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3 row">
+    <div class="col-6">
+      <label for="cidade" class="form-label">Cidade*:</label>
+      <input formControlName="cidade" type="text" class="form-control" id="cidade">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('cidade')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div class="col-6">
+      <label for="estado" class="form-label">Estado*:</label>
+      <input formControlName="estado" type="text" [maxLength]="2" class="form-control" id="estado">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('estado')">Não
+        pode ser nulo.
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-6">
+      <label for="complemento" class="form-label">Complemento:</label>
+      <input formControlName="complemento" type="text" class="form-control" id="complemento">
+    </div>
+  </div>
+
+</div>
+
+
