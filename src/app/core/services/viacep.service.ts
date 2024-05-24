@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {EnderecoModel} from "../models/endereco.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class ViacepService {
   constructor(private http: HttpClient) {
   }
 
-  public buscarCep(cep: string): Observable<EnderecoModel> {
+  public buscarCep(cep: string): Observable<any> {
     return this.http.get<any>(`${this.viacepUrl}/${cep}/json`);
   }
 }

@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-around mb-3 mx-auto">
+  <form [formGroup]="cadastroClienteForm" (ngSubmit)="onSubmit()"
+        class="col-5 mt-5 p-2 rounded-2 shadow">
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome*:</label>
+      <input type="text" formControlName="nome" [maxLength]="255" class="form-control" id="nome">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('nome')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="data_nascimento" class="form-label">Data Nascimento*:</label>
+      <input type="date" formControlName="dataNascimento" class="form-control" id="data_nascimento">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('dataNascimento')">Não pode ser nulo.</div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">E-Mail*:</label>
+      <input type="text" formControlName="email" [maxLength]="255" class="form-control" id="email">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('email')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div formGroupName="contaBancaria">
+      <div class="mb-3">
+        <label for="agencia" class="form-label">Agencia Conta Bancária*:</label>
+        <input type="text" formControlName="agencia" [maxLength]="4" class="form-control" id="agencia">
+        <div class="form-text text-danger" *ngIf="getIsValidInput('agencia')">Não
+          pode ser nulo.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="numero" class="form-label">Número Conta Bancária*:</label>
+        <input type="text" formControlName="numero" [maxLength]="255" class="form-control" id="numero">
+        <div class="form-text text-danger" *ngIf="getIsValidInput('numero')">Não
+          pode ser nulo.
+        </div>
+      </div>
+    </div>
+
+
+    <div class="d-flex justify-content-evenly">
+      <button type="submit" [disabled]="!cadastroClienteForm.valid"
+              class="btn btn-primary w-45">Salvar
+      </button>
+      <button type="submit" [routerLink]="['/home']"
+              class="btn btn-danger w-45">Voltar
+      </button>
+    </div>
+  </form>
+  <div class="col-5">
+    <div class="d-flex justify-content-between">
+      <h1>Extrato</h1>
+      <button class="btn btn-primary my-2" (click)="openModalTransacaoCadastro()">Cadastrar</button>
+    </div>
+    <table class="table table-hover table-dark table-striped">
+      <thead>
+      <tr>
+        <th>Valor</th>
+        <th>Tipo Transação</th>
+        <th>Descricao</th>
+        <th class="text-center">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (transacao of extrato; track transacao) {
+          <tr>
+            <td>{{ transacao.valor | currency }}</td>
+            <td>{{ getTipoTransacao(transacao.tipoTransacao) }}</td>
+            <td>{{ transacao.descricao || '-' }}</td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-danger" (click)="openModalTransacaoDelete(modalDeletar, transacao)">Excluir
+                </button>
+              </div>
+
+            </td>
+          </tr>
+        }
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<ng-template #modalDeletar>
+  <div class="modal-body text-center">
+    <p>Realmente deseja deletar ?</p>
+    <button type="button" class="btn btn-danger me-2" (click)="deletarTransacao()">Deletar</button>
+    <button type="button" class="btn btn-primary" (click)="exitModal()">Voltar</button>
+  </div>
+</ng-template>

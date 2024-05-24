@@ -1,0 +1,50 @@
+<div class="mx-auto row mb-3">
+  <form [formGroup]="cadastroClienteForm" (ngSubmit)="onSubmit()"
+        class="mt-5 p-2 rounded-2 shadow">
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome*:</label>
+      <input type="text" formControlName="nome" [maxLength]="255" class="form-control" id="nome">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('nome')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="data_nascimento" class="form-label">Data Nascimento*:</label>
+      <input type="date" formControlName="dataNascimento" class="form-control" id="data_nascimento">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('dataNascimento')">Não pode ser nulo.</div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">E-Mail*:</label>
+      <input type="email" formControlName="email" [maxLength]="255" class="form-control" id="email">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('nome')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div formGroupName="contaBancaria">
+      <div class="mb-3">
+        <label for="agencia" class="form-label">Agencia Conta Bancária*:</label>
+        <input type="text" formControlName="agencia" [maxLength]="4" class="form-control" id="agencia">
+        <div class="form-text text-danger" *ngIf="getIsValidInput('agencia')">Não
+          pode ser nulo.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="numero" class="form-label">Número Conta Bancária*:</label>
+        <input type="text" formControlName="numero" [maxLength]="255" class="form-control" id="numero">
+        <div class="form-text text-danger" *ngIf="getIsValidInput('numero')">Não
+          pode ser nulo.
+        </div>
+      </div>
+    </div>
+
+
+    <div class="d-flex justify-content-evenly">
+      <button type="submit" [disabled]="!cadastroClienteForm.valid"
+              class="btn btn-primary w-45">Cadastrar
+      </button>
+      <button type="submit" (click)="limparForm()"
+              class="btn btn-danger w-45">Limpar
+      </button>
+    </div>
+  </form>
+</div>

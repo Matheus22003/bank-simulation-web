@@ -42,6 +42,17 @@ export class AuthService {
       }));
   }
 
+  public refreshToken(token: string): Observable<AuthModel> {
+    return this.http.post<AuthModel>(`${this.apiUrl}/refreshToken`, {token})
+      .pipe(map(user => {
+        if (user && user.token) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+        }
+        return user;
+      }));
+  }
+
   public cadastrar(usuarioModel: UsuarioModel): Observable<UsuarioModel> {
     return this.http.post<UsuarioModel>(`${this.apiUrl}/save`, usuarioModel);
   }
@@ -51,7 +62,6 @@ export class AuthService {
       localStorage.setItem('userInfo', JSON.stringify(value));
       return value;
     }));
-
   }
 
   public logout() {

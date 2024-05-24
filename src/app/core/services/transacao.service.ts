@@ -16,15 +16,21 @@ export class TransacaoService {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  public cadastrar(valor: number): Observable<UsuarioModel> {
+  public cadastrar(email: string, valor: number, descricao: string): Observable<UsuarioModel> {
     return this.http.post<UsuarioModel>(`${this.apiUrl}/transacoes`, {
+      descricao,
       valor,
-      email: this.authService.currentUserInformationsValue.email
+      email
     });
   }
 
   public getTransacoes(): Observable<UsuarioModel> {
     return this.http.get<UsuarioModel>(`${this.apiUrl}/transacoes`);
+
+  }
+
+  public deletarTransacao(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/transacoes/${id}`);
 
   }
 

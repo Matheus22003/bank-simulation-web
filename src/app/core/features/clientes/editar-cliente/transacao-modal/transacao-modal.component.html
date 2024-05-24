@@ -1,0 +1,23 @@
+<div class="modal-body text-center">
+
+  <form [formGroup]="cadastroClienteForm" (ngSubmit)="onSubmit()"
+        class="">
+    <div class="mb-3">
+      <label for="valor" class="form-label">Valor*:</label>
+      <input type="text" formControlName="valor" [maxLength]="255" class="form-control" id="valor">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('valor')">Não
+        pode ser nulo.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="descricao" class="form-label">Descrição:</label>
+      <input type="text" formControlName="descricao" class="form-control" id="descricao">
+      <div class="form-text text-danger" *ngIf="getIsValidInput('descricao')">Não pode ser nulo.</div>
+    </div>
+    <button type="submit" [disabled]="!cadastroClienteForm.valid" class="btn btn-success me-2">
+      Salvar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="exitModal()">Voltar</button>
+  </form>
+
+</div>

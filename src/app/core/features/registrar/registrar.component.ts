@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {EnderecoComponent} from "./endereco/endereco.component";
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {passwordsMatchValidator} from "../../validators/password.validator";
 import {UsuarioModel} from "../../models/usuario.model";
-import {EnderecoModel} from "../../models/endereco.model";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {ToastrService} from "ngx-toastr";
@@ -13,7 +11,6 @@ import {ToastrService} from "ngx-toastr";
   selector: 'app-registrar',
   standalone: true,
   imports: [
-    EnderecoComponent,
     ReactiveFormsModule,
     NgIf
   ],
@@ -22,21 +19,11 @@ import {ToastrService} from "ngx-toastr";
 })
 export class RegistrarComponent {
 
-  public enderecoForm = this.formBuilder.group({
-    cep: ['', Validators.required],
-    rua: ['', Validators.required],
-    numero: [''],
-    bairro: ['', Validators.required],
-    cidade: ['', Validators.required],
-    estado: ['', Validators.required],
-    complemento: [''],
-  });
-
   public cadastroForm = this.formBuilder.group({
     nome: ['', Validators.required],
     email: ['', Validators.required],
     dataNascimento: ['', Validators.required],
-    endereco: this.enderecoForm,
+    // endereco: this.enderecoForm,
     password: ['', Validators.required],
     confirmPassword: ['', Validators.required],
   }, {validators: passwordsMatchValidator()});

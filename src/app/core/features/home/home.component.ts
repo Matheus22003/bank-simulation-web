@@ -1,35 +1,35 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Router, RouterLink} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
-import {TransacaoModel} from "../../models/transacao.model";
 import {CurrencyPipe} from "../../pipes/currency.pipe";
-import {TransacaoComponent} from "./transacao/transacao.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {TransacaoService} from "../../services/transacao.service";
+import {ClienteService} from "../../services/cliente.service";
+import {ClienteModel} from "../../models/cliente.model";
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CurrencyPipe,
-    TransacaoComponent,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
+  providers: [BsModalService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-  public extratos: TransacaoModel[] = [];
-  public valorAdicionado!: string;
+  public clientes: ClienteModel[] = [];
+  public clienteSelected?: ClienteModel;
+  public modalRef?: BsModalRef;
 
-  public valorTotalConta: number = 0;
 
-  constructor(private authService: AuthService,
+  constructor(private clienteService: ClienteService,
               private router: Router,
               private toastr: ToastrService,
-              private transacaoService: TransacaoService) {
+              private modalService: BsModalService) {
   }
 
   public ngOnInit(): void {
@@ -37,10 +37,10 @@ export class HomeComponent implements OnInit {
   }
 
   public loadTabela() {
-    this.authService.getProfile().subscribe({
+    this.clientes = [];
+    this.clienteService.getClientes().subscribe({
       next: (response) => {
-        this.extratos = response.contaBancaria.transacaos
-        this.extratos.forEach(value => this.valorTotalConta = this.valorTotalConta + value.valor);
+        this.clientes = response;
       },
       error: () => {
         this.router.navigate(['/login']);
@@ -50,13 +50,34 @@ export class HomeComponent implements OnInit {
   }
 
 
-  public adicionarValor(): void {
-    if (!!this.valorAdicionado) {
-      this.transacaoService.cadastrar(Number.parseFloat(this.valorAdicionado)).subscribe(value => {
-        this.valorAdicionado = '';
-        this.loadTabela();
-      });
-    }
+  public navigateCadastroCliente(): void {
+    this.router.navigate(['/cliente/cadastro']);
   }
 
+  public confirmDelete() {
+    if (this.clienteSelected?.id != null) {
+      this.clienteService.deleteCliente(this.clienteSelected.id).subscribe({
+        next: () => {
+          this.toastr.success("Cliente deletado com sucesso", 'Sucesso!!!');
+          this.exitModal();
+          this.loadTabela();
+        },
+        error: () => {
+          this.toastr.error("Erro ao deletar cliente", 'Erro!!!');
+        }
+      });
+      return
+    }
+    debugger
+    this.toastr.error("Erro ao deletar id do cliente", 'Erro!!!');
+  }
+
+  public openModalDelete(template: TemplateRef<any>, cliente: ClienteModel) {
+    this.clienteSelected = cliente;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  exitModal = (): void => {
+    this.modalRef?.hide();
+  };
 }
